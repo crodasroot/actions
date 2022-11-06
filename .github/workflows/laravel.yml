@@ -21,7 +21,7 @@ jobs:
       run: curl -sS https://getcomposer.org/installer -o composer-setup.php
     - name: Install Composer
       run: composer install
-    - name: Actualiza composer
+    - name: Actualiza composer cambios
       run: composer update
     - name: Generate key
       run: php artisan key:generate
