@@ -18,9 +18,9 @@ jobs:
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: Install Dependencies
-    - curl -sS https://getcomposer.org/installer | php
-    - ./composer.phar -V
-    - ./composer.phar install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts --ignore-platform-reqs
+      run: curl -sS https://getcomposer.org/installer | php
+      run: ./composer.phar -V
+      run: ./composer.phar install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts --ignore-platform-reqs
       run: composer install --prefer-dist --no-ansi --no-interaction --no-progress --optimize-autoloader --no-dev
     - name: Generate key
       run: php artisan key:generate
