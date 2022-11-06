@@ -21,6 +21,8 @@ jobs:
       run: curl -sS https://getcomposer.org/installer | php
     - name: Install Composer
       run: composer install --ignore-platform-reqs
+    - name: Actualiza composer
+      run: composer update
     - name: Generate key
       run: php artisan key:generate
     - name: Directory Permissions
