@@ -1,11 +1,11 @@
-name: Laravel
-
+name: Build and Deploy
 on:
-  push:
-    branches: [ "main" ]
- 
+    push:
+        branches:
+            -   master
 
 jobs:
+<<<<<<< HEAD
   laravel-tests:
 
     runs-on: ubuntu-latest
