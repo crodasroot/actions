@@ -1,40 +1,51 @@
-name: Laravel
-
-on:
-  push:
-    branches: [ "main" ]
- 
+name: Laravel CI Build and Test Workflow 
+# Name of the workflow 
+on: [push, pull_request]
+# Triggers the workflow on push or pull request events but only for the master branch
 
 jobs:
-  laravel-tests:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
+      - name: Generate key
+        run: php artisan key:generate
+      - name: Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+      - name: Create Database
+        run: |
+          mkdir -p database
+          touch database/database.sqlite
+      - name: Execute tests (Unit and Feature tests) via PHPUnit
+        run: vendor/bin/phpunit
+
+This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node on every push to your repository.
+
+name: Node.js CI
+
+on: [push]
+
+jobs:
+  build:
 
     runs-on: ubuntu-latest
 
-    steps:
-    - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
-      with:
-        php-version: '8.0'
-    - uses: actions/checkout@v3
-    - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-    - name: Install Dependencies
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
 
-    - name: borrra 
-      run: rm -rf composer.lock
-    - name: instalar 
-      run: composer install --ignore-platform-reqs
-    - name: actualizar composer
-      run: composer update
-    - name: Generate key
-      run: php artisan key:generate
-    - name: Directory Permissions
-      run: chmod -R 777 storage bootstrap/cache
-    - name: Create Database
-      run: |
-        mkdir -p database
-        touch database/database.sqlite
-    - name: Execute tests (Unit and Feature tests) via PHPUnit
-      env:
-        DB_CONNECTION: sqlite
-        DB_DATABASE: database/database.sqlite
-      run: vendor/bin/phpunit
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+
+This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node on every push to your repository. It will also publish a package to GitHub Packages when a release is created.
