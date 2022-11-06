@@ -20,7 +20,7 @@ jobs:
     - name: Install Dependencies
       run: curl -sS https://getcomposer.org/installer | php
     - name: Install Composer
-      run: composer install --prefer-dist --no-ansi --no-interaction --no-progress --optimize-autoloader --no-dev
+      run: composer install --ignore-platform-reqs
     - name: Generate key
       run: php artisan key:generate
     - name: Directory Permissions
