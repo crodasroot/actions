@@ -5,7 +5,7 @@ on:
             -   master
 
 jobs:
-<<<<<<< HEAD
+
   laravel-tests:
 
     runs-on: ubuntu-latest
