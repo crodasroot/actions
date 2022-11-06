@@ -18,9 +18,9 @@ jobs:
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: Install Dependencies
-      run: curl -sS https://getcomposer.org/installer | php
+      run: curl -sS https://getcomposer.org/installer -o composer-setup.php
     - name: Install Composer
-      run: composer install --ignore-platform-reqs
+      run: composer install
     - name: Actualiza composer
       run: composer update
     - name: Generate key
