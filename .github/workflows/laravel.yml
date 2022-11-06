@@ -18,10 +18,31 @@ jobs:
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: Install Dependencies
-      run: curl -sS https://getcomposer.org/installer -o composer-setup.php
-    - name: Install Composer
+
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Get composer cache directory
+      id: composer_config
+      uses: baschny/php-composer-action@v1
+      with:
+        composer_version: ${{ env.COMPOSER_VERSION }}
+        command: get_config
+
+    - name: Cache composer downloads
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.composer_config.outputs.composer_cache_dir }}
+        key: composer-v${{ steps.composer_config.outputs.composer_major_version }}
+
+    - name: Run composer install
+      uses: baschny/php-composer-action@v1
+      with:
+
+        command: install
+
       run: composer install
-    - name: Actualiza composer
+    - name: Actualiza composer cambios
       run: composer update
     - name: Generate key
       run: php artisan key:generate
