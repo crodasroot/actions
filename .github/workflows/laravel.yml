@@ -21,6 +21,7 @@ jobs:
 
     - name: borrra 
       run: rm -rf composer.lock
+    - name: instalar 
       run: composer install --ignore-platform-reqs
     - name: actualizar composer
       run: composer update
